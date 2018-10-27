@@ -1,4 +1,4 @@
-package main.java.Errors;
+package main.java.errors;
 
 public class DeckNotFoundException extends Exception {
     public DeckNotFoundException(String msg) {

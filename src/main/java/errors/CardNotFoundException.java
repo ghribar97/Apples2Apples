@@ -1,4 +1,4 @@
-package main.java.Errors;
+package main.java.errors;
 
 public class CardNotFoundException extends Exception {
     public CardNotFoundException(String msg) {

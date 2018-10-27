@@ -1,6 +1,6 @@
 package main.java.decks;
 
-import main.java.Errors.CardNotFoundException;
+import main.java.errors.CardNotFoundException;
 import main.java.cards.Card;
 import main.java.cards.CardFactory;
 import main.java.decks.FileReader.FileReader;

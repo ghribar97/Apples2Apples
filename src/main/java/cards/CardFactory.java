@@ -1,6 +1,6 @@
 package main.java.cards;
 
-import main.java.Errors.CardNotFoundException;
+import main.java.errors.CardNotFoundException;
 import main.java.cards.cardTypes.AppleCard;
 
 public class CardFactory {

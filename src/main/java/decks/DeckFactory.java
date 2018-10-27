@@ -1,6 +1,6 @@
 package main.java.decks;
 
-import main.java.Errors.DeckNotFoundException;
+import main.java.errors.DeckNotFoundException;
 import main.java.decks.DeckTypes.Basicdeck;
 
 public class DeckFactory {
