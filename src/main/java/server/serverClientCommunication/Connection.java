@@ -10,7 +10,7 @@ public class Connection {
     private DataOutputStream out;
     private BufferedReader in;
     private Socket socket;
-    private final int port = 3003;  // port on the server... same as in Server class file, if you change, change both!
+    private final int PORT = 3003;  // port on the server... same as in Server class file, if you change, change both!
 
 
     /**
@@ -34,7 +34,7 @@ public class Connection {
      */
     public Connection(String ipAddress) {
         try {
-            socket = new Socket(ipAddress, port);
+            socket = new Socket(ipAddress, PORT);
             out = new DataOutputStream(socket.getOutputStream());
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (IOException e) {

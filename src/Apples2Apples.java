@@ -240,12 +240,12 @@ public class Apples2Apples {
             BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
             DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
             String handString = "";
-            for(int i=0; i<7; i++) { //Deal 7 cards to the online Player
+            for(int i=0; i<7; i++) { //Deal 7 cards to the online ServerPlayer
                 handString = ((handString.compareTo("")==0)?"":(handString+";")) + redApples.remove(0); //Create String of Cards, separated by ;
             }
             outToClient.writeBytes(handString+"\n");
             players.add(new Player(onlineClient, false, connectionSocket, inFromClient, outToClient));
-            System.out.println("Connected to " + "Player ID: " + (onlineClient));
+            System.out.println("Connected to " + "ServerPlayer ID: " + (onlineClient));
         }
         //Add bots to reach 3 players excluding server player
         if(numberOfOnlinePlayers < 3) {
@@ -258,7 +258,7 @@ public class Apples2Apples {
         }
         //Add server player
         players.add(new Player(players.size(), new ArrayList<String>(), false));
-        for(int j=0; j<7; j++) { //Deal 7 cards to the Player
+        for(int j=0; j<7; j++) { //Deal 7 cards to the ServerPlayer
             players.get(players.size()-1).hand.add(redApples.remove(0));
         }
 
@@ -337,7 +337,7 @@ public class Apples2Apples {
             players.get(winningApple.playerID).greenApples.add(playedGreenApple); //add point to winner
 
             //notify everyone about who won
-            String winnerString = ((players.get(winningApple.playerID).isBot?"Bot":"Player") + " ID"+winningApple.playerID+
+            String winnerString = ((players.get(winningApple.playerID).isBot?"Bot":"ServerPlayer") + " ID"+winningApple.playerID+
                     " won with: " + winningApple.redApple);
             System.out.println(winnerString + "\n");
             for(int i=0; i<numberOfOnlinePlayers; i++) {
@@ -359,7 +359,7 @@ public class Apples2Apples {
             }
 
             if(finished) {
-                String gameWinnerString = "FINISHED: "+((players.get(gameWinner).isBot?"Bot":"Player") + " ID"+gameWinner+
+                String gameWinnerString = "FINISHED: "+((players.get(gameWinner).isBot?"Bot":"ServerPlayer") + " ID"+gameWinner+
                         " won the game");
                 //Notify online clients that someone won the game
                 for(int i=0; i<numberOfOnlinePlayers; i++) {

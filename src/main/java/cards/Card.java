@@ -2,19 +2,19 @@ package main.java.cards;
 
 public abstract class Card {
     private String text;
-    private String color;
+    private String type;
 
-    public Card(String text, String color) {
+    protected Card(String text, String type) {
         this.text = text;
-        this.color = color;
+        this.type = type;
     }
 
     public String getText() {
         return text;
     }
 
-    public String getColor() {
-        return color;
+    public String getType() {
+        return type;
     }
 
     /**

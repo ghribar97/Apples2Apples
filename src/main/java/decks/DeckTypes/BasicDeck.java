@@ -4,8 +4,8 @@ import main.java.decks.Deck;
 
 import java.util.Arrays;
 
-public class Basicdeck extends Deck {
-    public Basicdeck(String filePath, String color) {
+public class BasicDeck extends Deck {
+    public BasicDeck(String filePath, String color) {
         super(filePath, color);
     }
 

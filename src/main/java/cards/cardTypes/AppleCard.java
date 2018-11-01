@@ -3,8 +3,8 @@ package main.java.cards.cardTypes;
 import main.java.cards.Card;
 
 public class AppleCard extends Card {
-    public AppleCard(String text, String color) {
-        super(text, color);
+    public AppleCard(String text, String type) {
+        super(text, type);
     }
 
     /**
@@ -16,6 +16,6 @@ public class AppleCard extends Card {
 
     @Override
     public String toString() {
-        return "I am a " + getColor() + " AppleCard, without any functionality. My text: " + getText();
+        return "I am a " + getType() + ", without any functionality. My text: " + getText();
     }
 }

@@ -13,7 +13,7 @@ public abstract class Deck {
     private ArrayList<Card> cards;
     private String color;
 
-    public Deck(String filePath, String color) {
+    protected Deck(String filePath, String color) {
         this.color = color;
         this.cards = new ArrayList<Card>();
         formDeck(filePath);
