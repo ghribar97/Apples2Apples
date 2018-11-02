@@ -71,4 +71,12 @@ public class Server {
     public ArrayList<ServerPlayer> getPlayers() {
         return serverPlayers;
     }
+
+    /**
+     * For testing purposes.
+     * @param serverPlayers list of players (bots)
+     */
+    public void setServerPlayers(ArrayList<ServerPlayer> serverPlayers) {
+        this.serverPlayers = serverPlayers;
+    }
 }
