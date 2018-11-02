@@ -1,5 +1,6 @@
 package main.java.server;
 
+import main.java.players.client.notifier.Notifier;
 import main.java.players.ServerPlayer;
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ public class Server {
     private static Server instance;
 
     private final int PORT = 3003;  // port on the server... same as in Connection class file, if you change, change both!
-    private final int MIN_PLAYERS = 4;
+    private final int MIN_PLAYERS = 4;  // minimum required number of players to play the game
     private ArrayList<ServerPlayer> serverPlayers;  // List of serverPlayers that are connected to the server.
     private ServerSocket socket;
 
@@ -29,8 +30,8 @@ public class Server {
             try {
                 instance = new Server();
             } catch (IOException e) {
-                System.out.println("Can not start the server!");
-                System.out.println(e.getMessage());
+                Notifier.displayServerTrace("Can not start the server!");
+                Notifier.displayServerTrace(e.getMessage());
                 System.exit(1);
             }
         return instance;
@@ -41,26 +42,29 @@ public class Server {
      * @param numberOfOnlinePlayers - Online serverPlayers that wants to join the game.
      */
     public void waitForOnlinePlayers(int numberOfOnlinePlayers) {
-        System.out.println("waiting for players...");
+        Notifier.displayServerTrace("waiting for players...");
         for(int onlineClient=0; onlineClient<numberOfOnlinePlayers; onlineClient++) {
             Socket connectionSocket;
             try {
-                connectionSocket = socket.accept();
+                connectionSocket = socket.accept();  // accept players request for connection
             } catch (IOException e) {
-                System.out.println("Can not accept connection from player with ID: " + numberOfOnlinePlayers + "!");
-                System.out.println(e.getMessage());
+                Notifier.displayServerTrace("Can not accept connection from player with ID: " + numberOfOnlinePlayers + "!");
+                Notifier.displayServerTrace(e.getMessage());
                 continue;
             }
             serverPlayers.add(new ServerPlayer(connectionSocket, onlineClient));
-            System.out.println("Connected to " + "ServerPlayer ID: " + (onlineClient));
+            Notifier.displayServerTrace("Connected to " + "ServerPlayer ID: " + (onlineClient));
         }
         addBotPlayers();
     }
 
+    /**
+     * Add bots, so that the game can run with minimum number of players.
+     */
     private void addBotPlayers(){
         for (int i=serverPlayers.size(); i<MIN_PLAYERS; i++) {
             serverPlayers.add(new ServerPlayer(i));
-            System.out.println("Added bot with ID: " + i);
+            Notifier.displayServerTrace("Added bot with ID: " + i);
         }
     }
 

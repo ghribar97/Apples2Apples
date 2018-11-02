@@ -15,8 +15,8 @@ public class ReplenishPlayersHandPhase implements Phase {
         ArrayList<ServerPlayer> players = server.getPlayers();
         Dealer dealer = Dealer.getInstance();
         for (ServerPlayer player : players) {
-            dealer.dealMissingCards(player);
+            dealer.fillDiscardedCards(player);  // replace discarded cards in players hand
         }
-        GameLogic.judge = (GameLogic.judge + 1) % server.getPlayers().size();
+        GameLogic.judge = (GameLogic.judge + 1) % server.getPlayers().size();  // judge is the next player in the list
     }
 }

@@ -13,7 +13,8 @@ public class SettingUpTheGamePhase implements Phase {
         Server server = Server.getInstance();
         dealer.getGreenCardsDeck().shuffleDeck();
         dealer.getRedCardsDeck().shuffleDeck();
-        dealer.dealRedCards();
-        GameLogic.judge = new Random().nextInt(server.getPlayers().size());
+        dealer.dealRedCards();  // deal red cards to all players
+        // randomly decide who is the judge, if there are no players the judge is 0 (for testing purposes)
+        GameLogic.judge = (server.getPlayers().size() == 0) ? 0 : new Random().nextInt(server.getPlayers().size());
     }
 }

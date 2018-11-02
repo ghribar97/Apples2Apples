@@ -12,7 +12,6 @@ public class Connection {
     private Socket socket;
     private final int PORT = 3003;  // port on the server... same as in Server class file, if you change, change both!
 
-
     /**
      * Create input and output stream with the socket.
      * @param socket socket.

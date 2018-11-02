@@ -17,16 +17,28 @@ import java.util.Map;
 public class GameLogic {
     public static boolean gameFinished;
     public static int judge;
-    public static AppleCard greenApple;
+    public static AppleCard greenApple;  // current green apple
     public static Map<Card, ServerPlayer> playedCards;
-    public static ArrayList<Card> displayedCards;
+    public static ArrayList<Card> displayedCards;  // how the cards are displayed on player's screen
+    public final static boolean DEBUG_MODE = false;  // set to true if you want to see output of the server
 
-    public void startGame() {
+    /**
+     * Initialize the game and wait for the players to join.
+     * @param numberOfOnlinePlayers how many actual players are there (not bots)
+     */
+    public void startGame(int numberOfOnlinePlayers) {
         Server server = Server.getInstance();
-        server.waitForOnlinePlayers(1);
-        new SettingUpTheGamePhase().execute();  // this phase doesn't use judge anyway
+        server.waitForOnlinePlayers(numberOfOnlinePlayers);
+        gameCycle();
+    }
+
+
+    /**
+     * The main cycle of the game.
+     */
+    private void gameCycle() {
+        new SettingUpTheGamePhase().execute();
         while (!gameFinished) {
-            System.out.println("The judge is player with ID: " + judge);
             new DrawGreenApplePhase().execute();
             new CollectingRedApplesPhase().execute();
             new SelectAWinnerPhase().execute();

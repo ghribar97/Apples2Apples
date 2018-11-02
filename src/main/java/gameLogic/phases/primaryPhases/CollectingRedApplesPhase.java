@@ -3,6 +3,7 @@ package main.java.gameLogic.phases.primaryPhases;
 import main.java.cards.Card;
 import main.java.errors.CardNotFoundException;
 import main.java.gameLogic.GameLogic;
+import main.java.players.client.notifier.Notifier;
 import main.java.gameLogic.phases.Phase;
 import main.java.players.ServerPlayer;
 import main.java.server.Server;
@@ -23,19 +24,12 @@ public class CollectingRedApplesPhase implements Phase {
         ExecutorService threadPool = Executors.newFixedThreadPool(players.size()-1);
 
         for(int i=0; i<players.size(); i++) {
-            if(i != GameLogic.judge) {
+            if(i != GameLogic.judge) {  // is not a judge so the player must play
                 ServerPlayer currentPlayer = players.get(i);
                 Runnable task = new Runnable() { //Make sure every player can answer at the same time
                     @Override
                     public void run() {
-                        try {
-                            Card playedCard = currentPlayer.play();
-                            playedCard.activate();  // activate the special effects of the card
-                            GameLogic.playedCards.put(playedCard, currentPlayer);
-                            System.out.println(currentPlayer.toString() + " played this card: " + playedCard.getText());
-                        } catch (CardNotFoundException e) {
-                            System.out.println(currentPlayer.toString() + " couldn't play any card");
-                        }
+                        playerPlayProcedure(currentPlayer);
                     }
                 };
                 threadPool.execute(task);
@@ -48,22 +42,42 @@ public class CollectingRedApplesPhase implements Phase {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
-                System.out.println(e.getMessage());
+                Notifier.displayServerTrace(e.getMessage());
             }
         }
 
-        ArrayList<Card> shuffled = new ArrayList<>(GameLogic.playedCards.keySet());
+        ArrayList<Card> shuffled = new ArrayList<>(GameLogic.playedCards.keySet());  // submitted cards
         randomizePlayedCards(shuffled);
-        GameLogic.displayedCards = shuffled;
-        sendPlayedCardsToPlayers(shuffled, players);
+        GameLogic.displayedCards = shuffled;  // this is how the card will be displayed on client side
+        sendPlayedCardsToPlayers(shuffled, players);  // send to all players
     }
 
+    private void playerPlayProcedure(ServerPlayer player) {
+        try {
+            Card playedCard = player.play();  // receive which card the player has played
+            playedCard.activate();  // activate the special effects of the card
+            GameLogic.playedCards.put(playedCard, player);
+            Notifier.displayServerTrace(playedCard.toString() + " played this card: " + playedCard.getText());
+        } catch (CardNotFoundException e) {
+            Notifier.displayServerTrace(player.toString() + " couldn't play any card");
+        }
+    }
+
+    /**
+     * Send the played card to all online players.
+     * @param playedCards card that was played
+     * @param players ServerPlayers
+     */
     private void sendPlayedCardsToPlayers(ArrayList<Card> playedCards, ArrayList<ServerPlayer> players) {
         for (ServerPlayer player : players) {
             Postman.sendAllPlayedCards(player.getConnection(), playedCards);
         }
     }
 
+    /**
+     * Shuffle the submitted card before displaying it to the players.
+     * @param cards played cards
+     */
     private void randomizePlayedCards(ArrayList<Card> cards) {
         Collections.shuffle(cards);
     }

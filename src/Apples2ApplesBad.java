@@ -34,12 +34,12 @@ class Player {
             try{Thread.sleep(rnd.nextInt(500));}catch(Exception e){}
             // continue with non-buggy code
 
-            Apples2Apples.playedApple.add(new PlayedApple(playerID, hand.get(0)));
+            Apples2ApplesBad.playedApple.add(new PlayedApple(playerID, hand.get(0)));
             hand.remove(0);
         } else if(online){
             try {
                 String aPlayedApple = inFromClient.readLine();
-                Apples2Apples.playedApple.add(new PlayedApple(playerID, aPlayedApple));
+                Apples2ApplesBad.playedApple.add(new PlayedApple(playerID, aPlayedApple));
             } catch (Exception e) {}
         } else { //Server player, no separate thread needed since the server player always acts last
             System.out.println("Choose a red apple to play");
@@ -57,7 +57,7 @@ class Player {
                 System.out.println("That is not a valid option");
                 play();
             } catch (Exception e) {}
-            Apples2Apples.playedApple.add(new PlayedApple(playerID, hand.get(choice)));
+            Apples2ApplesBad.playedApple.add(new PlayedApple(playerID, hand.get(choice)));
             hand.remove(choice);
             System.out.println("Waiting for other players\n");
         }
@@ -65,13 +65,13 @@ class Player {
 
     public PlayedApple judge() {
         if(isBot){
-            return Apples2Apples.playedApple.get(0);
+            return Apples2ApplesBad.playedApple.get(0);
         } else if(online){
             int playedAppleIndex = 0;
             try {
                 playedAppleIndex = Integer.parseInt(inFromClient.readLine());
             } catch(Exception e) {}
-            return Apples2Apples.playedApple.get(playedAppleIndex);
+            return Apples2ApplesBad.playedApple.get(playedAppleIndex);
         }  else {
             System.out.println("Choose which red apple wins\n");
             int choice = 0;
@@ -83,7 +83,7 @@ class Player {
                 System.out.println("That is not a valid option");
                 judge();
             } catch (Exception e) {}
-            return Apples2Apples.playedApple.get(choice);
+            return Apples2ApplesBad.playedApple.get(choice);
         }
     }
 
@@ -107,7 +107,7 @@ class PlayedApple {
     }
 }
 
-public class Apples2Apples {
+public class Apples2ApplesBad {
     public ArrayList<String> redApples;
     public ArrayList<String> greenApples;
     public static ArrayList<PlayedApple> playedApple = new ArrayList<PlayedApple>();
@@ -115,20 +115,20 @@ public class Apples2Apples {
     public Random rnd;
 
     public static void main(String argv[]) {
-        Apples2Apples game;
+        Apples2ApplesBad game;
         if(argv.length == 0) {
             try {
-                game = new Apples2Apples(0);
+                game = new Apples2ApplesBad(0);
             } catch (Exception e) {e.printStackTrace(System.out);}
         } else {
             try {
                 //If just a number is submitted then this is the Server and there are online clients
                 int numberOfOnlineClients = Integer.parseInt(argv[0]);
-                game = new Apples2Apples(numberOfOnlineClients);
+                game = new Apples2ApplesBad(numberOfOnlineClients);
             } catch(NumberFormatException e) {
                 //If it is not a number then we assume it's an URL and then this is one of the online clients
                 try {
-                    game = new Apples2Apples(argv[0]);
+                    game = new Apples2ApplesBad(argv[0]);
                 } catch (Exception err){System.out.println(err.getMessage());}
             } catch(Exception e) {
                 e.printStackTrace(System.out);
@@ -139,7 +139,7 @@ public class Apples2Apples {
     /**
      * This is the constructor when this instance is one of the online clients
      **/
-    public Apples2Apples(String ipAddress) throws Exception {
+    public Apples2ApplesBad(String ipAddress) throws Exception {
         //Connect to server
         Socket aSocket = new Socket(ipAddress, 2048);
         DataOutputStream outToServer = new DataOutputStream(aSocket.getOutputStream());
@@ -215,7 +215,7 @@ public class Apples2Apples {
     /**
      * This is the constructor when this instance is also the server
      **/
-    public Apples2Apples(int numberOfOnlinePlayers) throws Exception {
+    public Apples2ApplesBad(int numberOfOnlinePlayers) throws Exception {
         redApples = new ArrayList<String>(Files.readAllLines(Paths.get("./", "redApples.txt"), StandardCharsets.ISO_8859_1));
         greenApples = new ArrayList<String>(Files.readAllLines(Paths.get("./", "greenApples.txt"), StandardCharsets.ISO_8859_1));
 
