@@ -8,6 +8,7 @@ import main.java.gameLogic.GameLogic;
 import main.java.gameLogic.phases.SettingUpTheGamePhase;
 import main.java.players.ServerPlayer;
 import main.java.server.Server;
+import main.test.commonfFunctionsForTesting.TestFunctions;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.stream.Stream;
 
 public class SettingUpTheGamePhaseTest {
@@ -23,6 +25,8 @@ public class SettingUpTheGamePhaseTest {
 
     @Before
     public void setUp() {
+        Dealer.getInstance().resetDealer();
+        Server.getInstance().setServerPlayers(new ArrayList<>());  // reset server player list to empty
         new SettingUpTheGamePhase().execute();
         dealer = Dealer.getInstance();
     }

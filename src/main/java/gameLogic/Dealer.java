@@ -79,4 +79,8 @@ public class Dealer {
     public Deck getGreenCardsDeck() {
         return greenCardsDeck;
     }
+
+    public void resetDealer() {
+        instance = null;
+    }
 }

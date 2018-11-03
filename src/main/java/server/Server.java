@@ -79,4 +79,9 @@ public class Server {
     public void setServerPlayers(ArrayList<ServerPlayer> serverPlayers) {
         this.serverPlayers = serverPlayers;
     }
+
+
+    public void resetServer() {
+        instance = null;
+    }
 }
